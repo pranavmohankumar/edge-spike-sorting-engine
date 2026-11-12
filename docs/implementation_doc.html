@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project #2 Implementation Document - Edge-Compatible Spike Sorting & Latent State Decoder</title>
+    <style>
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.6; color: #1e293b; background-color: #f8fafc; padding: 30px; }
+        .container { max-width: 900px; margin: 0 auto; background: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h1 { color: #0f172a; font-size: 24px; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; margin-top: 0; }
+        h2 { color: #1e40af; font-size: 18px; margin-top: 25px; }
+        .badge { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 12px; margin-bottom: 15px; }
+        .box { background: #f1f5f9; border-left: 4px solid #3b82f6; padding: 15px; margin: 15px 0; border-radius: 0 6px 6px 0; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+        pre { background: #0f172a; color: #f8fafc; padding: 15px; border-radius: 8px; overflow-x: auto; font-size: 13px; }
+        footer { margin-top: 40px; font-size: 12px; color: #64748b; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="badge">Project #2 Specification</span>
+        <h1>Edge-Compatible Spike Sorting & Latent State Decoder</h1>
+        <p><strong>Target Industry Profile:</strong> Neuralink, Blackrock Neurotech, Precision Neuroscience</p>
+        
+        <h2>1. System Architecture & Concept</h2>
+        <div class="box">
+            <p>Streaming 1D-CNN autoencoder for real-time spike detection and dimension reduction, paired with a Kalman filter latent state trajectory estimator.</p>
+        </div>
+
+        <h2>2. Synthetic Bio-Data Engineering Strategy</h2>
+        <p>32-channel extracellular voltage recordings (30 kHz) with superimposed bi-phasic action potential templates and pink noise.</p>
+
+        <h2>3. Low-End LLM Prompt & Module Blueprint</h2>
+        <ul>
+            <li><strong>Module 1: Synthetic MEA Generator:</strong> Generate 32-channel 30kHz neural stream with stochastic Poisson spike trains and baseline pink noise.</li>
+            <li><strong>Module 2: 1D-CNN Spike Classifier:</strong> Implement lightweight PyTorch 1D-CNN autoencoder for spike waveform feature extraction.</li>
+            <li><strong>Module 3: Real-Time Latent Trajectory Decoder:</strong> Build discrete-time Kalman Filter to decode 2D kinematics from spike rate bins.</li>
+        </ul>
+
+        <h2>4. Core Technical Starter Skeleton</h2>
+        <pre><code>import torch
+import torch.nn as nn
+
+class SpikeSortingCNN(nn.Module):
+    def __init__(self, num_channels=32, latent_dim=16):
+        super().__init__()
+        self.encoder = nn.Sequential(
+            nn.Conv1d(num_channels, 64, kernel_size=7, stride=2, padding=3),
+            nn.BatchNorm1d(64),
+            nn.ReLU(),
+            nn.Conv1d(64, latent_dim, kernel_size=5, stride=2, padding=2),
+            nn.AdaptiveAvgPool1d(1)
+        )
+    def forward(self, x):
+        return self.encoder(x).squeeze(-1)
+</code></pre>
+
+        <footer>
+            <p>Neurotech Technical Blueprint | Prepared for Pranav Mohankumar | UIUC Neural Engineering</p>
+        </footer>
+    </div>
+</body>
+</html>

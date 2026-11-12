@@ -1,0 +1,57 @@
+================================================================================
+LOW-END LLM IMPLEMENTATION SPECIFICATION & PROMPT SHEET
+Project 2: Edge-Compatible Spike Sorting & Latent State Decoder
+Target Profile: Neuralink, Blackrock Neurotech, Precision Neuroscience
+================================================================================
+
+[SYSTEM PROMPT FOR LOCAL / LOW-END LLM (Llama-3-8B, Qwen-2.5-Coder, DeepSeek-Coder)]
+You are an expert Neural Engineering AI systems developer. Your task is to implement Project #2 in Python 3.10+.
+Follow these strict guidelines:
+1. Write clean, modular, self-contained Python code using only standard libraries, NumPy, SciPy, and PyTorch.
+2. DO NOT require external datasets. Create synthetic bio-data generators inside the code using `numpy.random`.
+3. Implement each module step-by-step as outlined below.
+4. Include type annotations, detailed NumPy docstrings, and an `if __name__ == '__main__':` block verifying end-to-end execution.
+
+--------------------------------------------------------------------------------
+PROJECT ARCHITECTURE OVERVIEW:
+Streaming 1D-CNN autoencoder for real-time spike detection and dimension reduction, paired with a Kalman filter latent state trajectory estimator.
+
+SYNTHETIC DATA STRATEGY:
+32-channel extracellular voltage recordings (30 kHz) with superimposed bi-phasic action potential templates and pink noise.
+
+--------------------------------------------------------------------------------
+STEP-BY-STEP MODULE IMPLEMENTATION INSTRUCTIONS:
+
+* Module 1: Synthetic MEA Generator:
+  Generate 32-channel 30kHz neural stream with stochastic Poisson spike trains and baseline pink noise.
+
+* Module 2: 1D-CNN Spike Classifier:
+  Implement lightweight PyTorch 1D-CNN autoencoder for spike waveform feature extraction.
+
+* Module 3: Real-Time Latent Trajectory Decoder:
+  Build discrete-time Kalman Filter to decode 2D kinematics from spike rate bins.
+
+--------------------------------------------------------------------------------
+REFERENCE CODE STARTER SKELETON:
+```python
+import torch
+import torch.nn as nn
+
+class SpikeSortingCNN(nn.Module):
+    def __init__(self, num_channels=32, latent_dim=16):
+        super().__init__()
+        self.encoder = nn.Sequential(
+            nn.Conv1d(num_channels, 64, kernel_size=7, stride=2, padding=3),
+            nn.BatchNorm1d(64),
+            nn.ReLU(),
+            nn.Conv1d(64, latent_dim, kernel_size=5, stride=2, padding=2),
+            nn.AdaptiveAvgPool1d(1)
+        )
+    def forward(self, x):
+        return self.encoder(x).squeeze(-1)
+
+```
+
+INSTRUCTIONS TO EXECUTOR:
+Execute each module sequentially. Ensure all array shapes align perfectly across data generation, processing, and prediction pipeline stages.
+================================================================================
